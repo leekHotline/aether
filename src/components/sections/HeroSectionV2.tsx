@@ -82,7 +82,7 @@ export default function HeroSectionV2() {
   useEffect(() => {
     if (!stepperRef.current) return
 
-    const mm = ScrollTrigger.matchMedia()
+    const mm = gsap.matchMedia()
     mm.add('(min-width: 768px)', () => {
       const steps = VALUE_CARDS.length
       let lineWidth = 0
