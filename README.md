@@ -11,7 +11,7 @@
 
 ### Installation
 
-## 命令行命令使用cmdon
+## 命令行命令优先使用cmd 如: cmd /c
 
 ```bash
 # Install dependencies
