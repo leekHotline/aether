@@ -78,28 +78,32 @@ export default function GlassSphere({ world }: GlassSphereProps) {
     openCard()
   }
   
-  // 发光强度
-  const emissiveIntensity = isHovered ? 0.5 : 0.2
+  // 发光强度 - 大幅提升
+  const emissiveIntensity = isHovered ? 0.8 : 0.5
+  
+  // 统一使用蓝紫色系的光晕，避免红色
+  const glowColor = '#818CF8' // 统一蓝紫光晕
+  const atmosphereColor = '#A5B4FC' // 淡蓝紫大气层
   
   return (
     <group position={world.position}>
-      {/* 外发光环 - 始终显示，更大更柔和 */}
+      {/* 外发光环 - 始终显示，更大更亮 */}
       <Sphere ref={glowRef} args={[1, 32, 32]}>
         <meshBasicMaterial
-          color={world.primaryColor}
+          color={glowColor}
           transparent
-          opacity={0.12}
+          opacity={isHovered ? 0.35 : 0.2}
           side={THREE.BackSide}
           blending={THREE.AdditiveBlending}
         />
       </Sphere>
       
-      {/* 第二层外发光 - 更远的光晕 */}
-      <Sphere args={[1.4 * world.size, 24, 24]}>
+      {/* 第二层外发光 - 更远更柔和的光晕 */}
+      <Sphere args={[1.5 * world.size, 24, 24]}>
         <meshBasicMaterial
-          color={world.secondaryColor}
+          color={atmosphereColor}
           transparent
-          opacity={0.05}
+          opacity={isHovered ? 0.15 : 0.08}
           side={THREE.BackSide}
           blending={THREE.AdditiveBlending}
         />
@@ -130,26 +134,26 @@ export default function GlassSphere({ world }: GlassSphereProps) {
         )}
       </Sphere>
       
-      {/* 大气层效果 - 渐变边缘 */}
-      <Sphere ref={atmosphereRef} args={[1.05, 48, 48]}>
+      {/* 大气层效果 - 蓝紫色渐变边缘 */}
+      <Sphere ref={atmosphereRef} args={[1.06, 48, 48]}>
         <meshBasicMaterial
-          color={world.secondaryColor}
+          color={atmosphereColor}
           transparent
-          opacity={isHovered ? 0.18 : 0.1}
+          opacity={isHovered ? 0.25 : 0.15}
           side={THREE.BackSide}
           blending={THREE.AdditiveBlending}
         />
       </Sphere>
       
-      {/* 菲涅尔边缘光 */}
-      <Sphere args={[1.02 * world.size, 48, 48]}>
+      {/* 菲涅尔边缘光 - 使用统一蓝紫色 */}
+      <Sphere args={[1.03 * world.size, 48, 48]}>
         <shaderMaterial
           transparent
           blending={THREE.AdditiveBlending}
           side={THREE.FrontSide}
           uniforms={{
-            glowColor: { value: new THREE.Color(world.primaryColor) },
-            intensity: { value: isHovered ? 1.5 : 0.8 },
+            glowColor: { value: new THREE.Color(glowColor) },
+            intensity: { value: isHovered ? 2.0 : 1.2 },
           }}
           vertexShader={`
             varying vec3 vNormal;
@@ -167,8 +171,8 @@ export default function GlassSphere({ world }: GlassSphereProps) {
             varying vec3 vPosition;
             void main() {
               vec3 viewDir = normalize(-vPosition);
-              float fresnel = pow(1.0 - abs(dot(viewDir, vNormal)), 3.0);
-              gl_FragColor = vec4(glowColor, fresnel * intensity * 0.5);
+              float fresnel = pow(1.0 - abs(dot(viewDir, vNormal)), 2.5);
+              gl_FragColor = vec4(glowColor, fresnel * intensity * 0.6);
             }
           `}
         />
@@ -177,7 +181,7 @@ export default function GlassSphere({ world }: GlassSphereProps) {
   )
 }
 
-// 纹理材质组件 - 优化立体感
+// 纹理材质组件 - 大幅提升亮度和氛围
 function TexturedMaterial({ 
   texturePath, 
   emissiveIntensity,
@@ -203,11 +207,13 @@ function TexturedMaterial({
   return (
     <meshStandardMaterial
       map={texture}
-      metalness={0.15}
-      roughness={0.65}
-      emissive={primaryColor}
-      emissiveIntensity={emissiveIntensity * 0.4}
-      envMapIntensity={0.8}
+      metalness={0.05}
+      roughness={0.4}
+      emissive="#ffffff"
+      emissiveIntensity={emissiveIntensity * 0.6}
+      emissiveMap={texture}
+      envMapIntensity={1.2}
+      toneMapped={false}
     />
   )
 }

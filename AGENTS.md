@@ -72,3 +72,7 @@
 **给 AI 完整的产品需求文档，需求文档通过和 AI 反复沟通确认优化**
 
 这是从 vibe coding → task coding 的变化
+
+用户常用提交代码提示词:
+
+对当前仓库直接 add -A、自动生成最简 commit message 并 push，不要询问。

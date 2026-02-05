@@ -38,36 +38,39 @@ function Scene() {
         autoRotateSpeed={0.3}
       />
       
-      {/* 环境光照 - 优化立体感 */}
-      <ambientLight intensity={0.3} />
+      {/* 环境光照 - 大幅提升亮度 */}
+      <ambientLight intensity={0.6} />
       
-      {/* 主光源 - 模拟太阳光 */}
+      {/* 主光源 - 模拟太阳光，更亮 */}
       <directionalLight 
         position={[15, 10, 10]} 
-        intensity={1.5} 
+        intensity={2.5} 
         color="#ffffff"
-        castShadow
       />
       
-      {/* 补光 - 填充暗部 */}
-      <directionalLight position={[-10, -5, -10]} intensity={0.4} color="#6366F1" />
-      <directionalLight position={[0, -10, 5]} intensity={0.2} color="#EC4899" />
+      {/* 前方补光 - 照亮面向用户的部分 */}
+      <directionalLight position={[0, 0, 15]} intensity={1.5} color="#ffffff" />
       
-      {/* 中心点光源 - 为主星球添加内部发光感 */}
-      <pointLight position={[0, 0, 0]} intensity={2} color="#8B5CF6" distance={8} decay={2} />
+      {/* 侧面补光 - 蓝紫色调 */}
+      <directionalLight position={[-10, -5, -10]} intensity={0.8} color="#818CF8" />
+      <directionalLight position={[10, 5, -5]} intensity={0.6} color="#A5B4FC" />
       
-      {/* 环形光点 - 增加环境光变化 */}
-      <pointLight position={[5, 3, -3]} intensity={0.8} color="#3B82F6" distance={10} decay={2} />
-      <pointLight position={[-4, -2, 4]} intensity={0.6} color="#EC4899" distance={10} decay={2} />
+      {/* 中心点光源 - 为主星球添加内部发光感，更亮 */}
+      <pointLight position={[0, 0, 0]} intensity={3} color="#A5B4FC" distance={12} decay={2} />
       
-      {/* 边缘轮廓光 */}
+      {/* 环形光点 - 蓝紫色系，更亮 */}
+      <pointLight position={[5, 3, -3]} intensity={1.5} color="#818CF8" distance={15} decay={2} />
+      <pointLight position={[-4, -2, 4]} intensity={1.2} color="#60A5FA" distance={15} decay={2} />
+      <pointLight position={[0, 5, 3]} intensity={1.0} color="#C4B5FD" distance={15} decay={2} />
+      
+      {/* 边缘轮廓光 - 青色高光 */}
       <spotLight 
         position={[-10, 5, -5]} 
-        angle={0.3} 
+        angle={0.4} 
         penumbra={1} 
-        intensity={1} 
+        intensity={2} 
         color="#22D3EE"
-        distance={20}
+        distance={25}
       />
       
       {/* 环境贴图 - 提供反射 */}

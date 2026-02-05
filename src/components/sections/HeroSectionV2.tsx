@@ -40,7 +40,7 @@ const VALUE_CARDS = [
     step: '03',
     title: 'React',
     subtitle: '世界响应',
-    description: '物理引擎实时渲染新的世界状态',
+    description: '世界模型实时渲染新的世界状态',
     icon: '🌍',
   },
 ]
@@ -160,7 +160,7 @@ export default function HeroSectionV2() {
               <p className="text-xl text-gray-300 max-w-lg leading-relaxed">
                 一句话改变世界规则。
                 <br />
-                写下你的意图，物理引擎即刻响应。
+                写下你的意图，世界模型即刻响应。
               </p>
             </FadeIn>
 
