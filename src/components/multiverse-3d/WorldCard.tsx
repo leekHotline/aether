@@ -107,7 +107,7 @@ export default function WorldCard() {
                 
                 {/* 标签 */}
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {activeWorld.tags.map((tag) => (
+                  {activeWorld.tags.map((tag: string) => (
                     <span
                       key={tag}
                       className="px-3 py-1 text-xs font-medium rounded-full"

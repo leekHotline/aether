@@ -182,3 +182,12 @@ button {
 .monaco-editor-background {
   background: transparent !important;
 }
+
+@keyframes line-shine {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

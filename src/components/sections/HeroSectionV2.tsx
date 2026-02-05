@@ -1,11 +1,12 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import clsx from 'clsx'
 
 import FadeIn from '@/components/animations/FadeIn'
 import TextReveal from '@/components/animations/TextReveal'
@@ -47,6 +48,11 @@ const VALUE_CARDS = [
 export default function HeroSectionV2() {
   const containerRef = useRef<HTMLDivElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
+  const stepperRef = useRef<HTMLDivElement>(null)
+  const lineProgressRef = useRef<HTMLDivElement>(null)
+  const lineTrackRef = useRef<HTMLDivElement>(null)
+  const lineGlowRef = useRef<HTMLDivElement>(null)
+  const [activeStep, setActiveStep] = useState(0)
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -71,6 +77,48 @@ export default function HeroSectionV2() {
     }, containerRef)
 
     return () => ctx.revert()
+  }, [])
+
+  useEffect(() => {
+    if (!stepperRef.current) return
+
+    const mm = ScrollTrigger.matchMedia()
+    mm.add('(min-width: 768px)', () => {
+      const steps = VALUE_CARDS.length
+      let lineWidth = 0
+
+      const updateMetrics = () => {
+        lineWidth = lineTrackRef.current?.getBoundingClientRect().width ?? 0
+      }
+
+      updateMetrics()
+      ScrollTrigger.addEventListener('refreshInit', updateMetrics)
+
+      const setProgress = lineProgressRef.current ? gsap.quickSetter(lineProgressRef.current, 'scaleX') : null
+      const setGlowX = lineGlowRef.current ? gsap.quickSetter(lineGlowRef.current, 'x') : null
+
+      const trigger = ScrollTrigger.create({
+        trigger: stepperRef.current,
+        start: 'top 75%',
+        end: 'bottom 25%',
+        scrub: true,
+        onUpdate: (self) => {
+          const progress = Math.max(0, Math.min(1, self.progress))
+          if (setProgress) setProgress(Math.max(0.04, progress))
+          if (setGlowX) setGlowX(progress * lineWidth)
+
+          const nextIndex = Math.min(steps - 1, Math.floor(progress * steps + 0.0001))
+          setActiveStep((prev) => (prev === nextIndex ? prev : nextIndex))
+        },
+      })
+
+      return () => {
+        trigger.kill()
+        ScrollTrigger.removeEventListener('refreshInit', updateMetrics)
+      }
+    })
+
+    return () => mm.revert()
   }, [])
 
   return (
@@ -163,8 +211,14 @@ export default function HeroSectionV2() {
       </motion.section>
 
       {/* 价值阐释区 */}
-      <section className="relative z-10 py-24 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
+      <section ref={stepperRef} className="relative z-10 py-28 px-6 bg-white">
+        {/* 背景柔光 */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-indigo-100/60 blur-3xl" />
+          <div className="absolute -bottom-24 right-1/3 h-64 w-64 rounded-full bg-purple-100/60 blur-3xl" />
+        </div>
+
+        <div className="relative max-w-6xl mx-auto">
           <FadeIn className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               三步，重塑世界
@@ -174,32 +228,110 @@ export default function HeroSectionV2() {
             </p>
           </FadeIn>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {VALUE_CARDS.map((card, i) => (
-              <motion.div
-                key={card.step}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
+          <div className="relative">
+            {/* 连接线 */}
+            <div
+              ref={lineTrackRef}
+              className="pointer-events-none absolute left-1/2 top-1/2 hidden h-px w-[90%] -translate-x-1/2 -translate-y-1/2 bg-slate-200/70 md:block"
+            >
+              <div
+                ref={lineProgressRef}
+                className="relative h-full w-full origin-left scale-x-0 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400"
               >
-                <GlassCard tilt className="h-full">
-                  <div className="flex items-start gap-4">
-                    <div className="text-4xl">{card.icon}</div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs font-mono text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded">
-                          {card.step}
-                        </span>
-                        <span className="text-xs text-gray-400">{card.subtitle}</span>
+                <span className="absolute inset-0 opacity-70 blur-[1px] bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.8),transparent)] bg-[length:200%_100%] animate-[line-shine_2.8s_linear_infinite]" />
+              </div>
+              <div
+                ref={lineGlowRef}
+                className="absolute -top-2 h-5 w-24 rounded-full bg-white/70 blur-xl opacity-80"
+              />
+            </div>
+
+            <div className="pointer-events-none absolute left-1/2 top-1/2 hidden w-[90%] -translate-x-1/2 -translate-y-1/2 md:flex items-center justify-between">
+              {VALUE_CARDS.map((card, i) => {
+                const isActive = activeStep === i
+                const isDone = activeStep > i
+                return (
+                  <div
+                    key={`${card.step}-dot`}
+                    className={clsx(
+                      'h-3 w-3 rounded-full border border-white/80 shadow-sm transition-all duration-500',
+                      isActive && 'scale-125 bg-indigo-500 shadow-[0_0_14px_rgba(99,102,241,0.65)]',
+                      isDone && 'bg-indigo-300',
+                      !isActive && !isDone && 'bg-white'
+                    )}
+                  />
+                )
+              })}
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-3">
+              {VALUE_CARDS.map((card, i) => {
+                const isActive = activeStep === i
+                const isDone = activeStep > i
+
+                return (
+                  <motion.div
+                    key={card.step}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.12 }}
+                  >
+                    <GlassCard
+                      tilt
+                      className={clsx(
+                        'group h-full p-6 transition-all duration-500',
+                        isActive && 'ring-1 ring-indigo-200/80 shadow-xl',
+                        !isActive && 'shadow-sm',
+                        isDone && 'opacity-90'
+                      )}
+                    >
+                      <div className="flex items-start gap-4">
+                        <div
+                          className={clsx(
+                            'flex h-12 w-12 items-center justify-center rounded-2xl border border-white/50 bg-white/70 text-2xl shadow-sm transition-all duration-500',
+                            isActive && 'bg-indigo-50 text-indigo-600 shadow-md',
+                            !isActive && 'text-slate-600'
+                          )}
+                        >
+                          {card.icon}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span
+                              className={clsx(
+                                'text-xs font-mono px-2 py-0.5 rounded',
+                                isActive ? 'text-indigo-600 bg-indigo-50' : 'text-gray-400 bg-gray-100'
+                              )}
+                            >
+                              {card.step}
+                            </span>
+                            <span className="text-xs text-gray-400">{card.subtitle}</span>
+                          </div>
+                          <h3 className="text-xl font-semibold text-gray-900 mb-2">{card.title}</h3>
+                          <p className="text-sm text-gray-600 leading-relaxed">{card.description}</p>
+
+                          <div
+                            className={clsx(
+                              'mt-5 h-1 w-full overflow-hidden rounded-full bg-slate-100',
+                              isActive && 'bg-indigo-100/70'
+                            )}
+                          >
+                            <div
+                              className={clsx(
+                                'h-full w-1/3 rounded-full bg-gradient-to-r from-indigo-400 to-purple-400 transition-all duration-500',
+                                isActive && 'w-2/3',
+                                isDone && 'w-full'
+                              )}
+                            />
+                          </div>
+                        </div>
                       </div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">{card.title}</h3>
-                      <p className="text-sm text-gray-600 leading-relaxed">{card.description}</p>
-                    </div>
-                  </div>
-                </GlassCard>
-              </motion.div>
-            ))}
+                    </GlassCard>
+                  </motion.div>
+                )
+              })}
+            </div>
           </div>
         </div>
       </section>

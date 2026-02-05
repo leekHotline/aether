@@ -1,12 +1,7 @@
 import { WorldSeed } from '@/types'
 
-// Blender Open Movie Videos - Modern, high-quality demos
-// 🥇 Sprite Fright - PBR写实风格，多角色群体行为，适合世界模型IDE展示
-const SPRITE_FRIGHT = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4'
-// 🥈 Agent 327 风格 - 任务驱动，Agent行为链
-const AGENT_STYLE = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
-// 🥉 Cosmos Laundromat 风格 - 世界切换/状态变形
-const COSMOS_STYLE = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
+// 本地视频 - Project Genie 无限交互世界演示
+const LOCAL_VIDEO = '/video/infinite_interactive_world.mp4'
 
 export const seedWorlds: WorldSeed[] = [
   {
@@ -19,19 +14,19 @@ export const seedWorlds: WorldSeed[] = [
       {
         id: 'baseline',
         label: 'Normal Gravity',
-        videoUrl: SPRITE_FRIGHT,
+        videoUrl: LOCAL_VIDEO,
         description: '正常重力状态',
       },
       {
         id: 'gravity_off',
         label: 'Zero Gravity',
-        videoUrl: COSMOS_STYLE,
+        videoUrl: LOCAL_VIDEO,
         description: '引力消失，万物漂浮',
       },
       {
         id: 'sword_slash',
         label: 'Sword Slash',
-        videoUrl: AGENT_STYLE,
+        videoUrl: LOCAL_VIDEO,
         description: '剑气斩击效果',
       },
     ],
@@ -47,19 +42,19 @@ export const seedWorlds: WorldSeed[] = [
       {
         id: 'baseline',
         label: 'Calm State',
-        videoUrl: AGENT_STYLE,
+        videoUrl: LOCAL_VIDEO,
         description: '平静的道场',
       },
       {
         id: 'gravity_off',
         label: 'Levitation',
-        videoUrl: COSMOS_STYLE,
+        videoUrl: LOCAL_VIDEO,
         description: '悬浮冥想',
       },
       {
         id: 'sword_slash',
         label: 'Energy Strike',
-        videoUrl: SPRITE_FRIGHT,
+        videoUrl: LOCAL_VIDEO,
         description: '能量斩击',
       },
     ],
@@ -75,19 +70,19 @@ export const seedWorlds: WorldSeed[] = [
       {
         id: 'baseline',
         label: 'Rainy Night',
-        videoUrl: COSMOS_STYLE,
+        videoUrl: LOCAL_VIDEO,
         description: '雨夜街头',
       },
       {
         id: 'gravity_off',
         label: 'Time Freeze',
-        videoUrl: SPRITE_FRIGHT,
+        videoUrl: LOCAL_VIDEO,
         description: '时间静止，雨滴悬浮',
       },
       {
         id: 'sword_slash',
         label: 'Gunshot',
-        videoUrl: AGENT_STYLE,
+        videoUrl: LOCAL_VIDEO,
         description: '枪火闪烁',
       },
     ],
