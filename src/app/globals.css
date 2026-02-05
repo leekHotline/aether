@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --aether-bg: #0a0a0f;
+  --aether-surface: #12121a;
+  --aether-border: #1e1e2e;
+  --aether-text: #e4e4e7;
+  --aether-muted: #71717a;
+  --aether-accent: #6366f1;
+  --aether-glow: #818cf8;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background: var(--aether-bg);
+  color: var(--aether-text);
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--aether-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--aether-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--aether-muted);
+}
+
+/* Monaco Editor Overrides */
+.monaco-editor {
+  background: transparent !important;
+}
+
+.monaco-editor .margin,
+.monaco-editor-background {
+  background: transparent !important;
+}
