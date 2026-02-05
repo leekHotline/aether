@@ -36,7 +36,7 @@ export default function NarrativeEditor({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.1 }}
-      className="h-full flex flex-col bg-white overflow-hidden"
+      className="h-full flex flex-col bg-white overflow-hidden relative"
       onKeyDown={handleKeyDown}
     >
       {/* Editor header */}

@@ -270,7 +270,7 @@ export default function EditorPage() {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="h-16 flex items-center justify-center gap-3 border-t border-border bg-white px-4"
       >
-        <span className="text-xs text-text-muted mr-2">快捷意图:</span>
+        <span className="text-sm text-text-DEFAULT font-medium mr-2">快捷意图:</span>
         {[
           { label: '🌌 重力消失', text: '引力消失了' },
           { label: '⏱️ 时间减慢', text: '时间开始减慢' },
@@ -280,7 +280,7 @@ export default function EditorPage() {
           <button
             key={intent.label}
             onClick={() => handleTextChange(intent.text)}
-            className="px-4 py-2 bg-primary-surface hover:bg-accent-DEFAULT/10 text-sm text-text-secondary hover:text-accent-DEFAULT rounded-lg transition-all border border-transparent hover:border-accent-DEFAULT/20"
+            className="px-4 py-2 bg-white border-2 border-gray-200 hover:border-accent-DEFAULT text-sm text-text-DEFAULT hover:text-accent-DEFAULT rounded-lg transition-all shadow-sm hover:shadow-md"
           >
             {intent.label}
           </button>

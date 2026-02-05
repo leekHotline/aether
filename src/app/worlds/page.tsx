@@ -159,10 +159,10 @@ export default function WorldsPage() {
                 <button
                   key={tag}
                   onClick={() => setActiveFilter(tag)}
-                  className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
+                  className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm ${
                     tag === activeFilter
                       ? 'bg-accent-DEFAULT text-white shadow-glow'
-                      : 'bg-white border border-border text-text-secondary hover:border-accent-DEFAULT/50 hover:text-text-DEFAULT'
+                      : 'bg-white border-2 border-gray-200 text-text-DEFAULT hover:border-accent-DEFAULT hover:text-accent-DEFAULT'
                   }`}
                 >
                   {tag}

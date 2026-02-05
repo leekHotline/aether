@@ -2,12 +2,12 @@
 
 import dynamic from 'next/dynamic'
 
-// Dynamically import to avoid SSR issues with GSAP
-const HeroSection = dynamic(
-  () => import('@/components/sections/HeroSection'),
+// 使用 V2 多元宇宙节点舞台 Hero
+const HeroSectionV2 = dynamic(
+  () => import('@/components/sections/HeroSectionV2'),
   { ssr: false }
 )
 
 export default function LandingPage() {
-  return <HeroSection />
+  return <HeroSectionV2 />
 }

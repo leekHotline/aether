@@ -48,9 +48,9 @@ export default function RippleButton({
   const baseStyles = 'relative overflow-hidden font-medium transition-all duration-300 focus-ring'
   
   const variantStyles = {
-    primary: 'bg-accent-DEFAULT text-white hover:bg-accent-glow shadow-medium hover:shadow-glow',
-    secondary: 'bg-white text-text-DEFAULT border-2 border-gray-200 hover:border-accent-DEFAULT hover:shadow-medium shadow-soft',
-    ghost: 'text-text-DEFAULT hover:text-accent-DEFAULT hover:bg-primary-surface',
+    primary: 'bg-indigo-500 text-white hover:bg-indigo-600 hover:shadow-lg',
+    secondary: 'bg-white text-gray-900 border-2 border-gray-200 hover:shadow-lg',
+    ghost: 'text-gray-900 hover:text-indigo-500 hover:bg-gray-100',
   }
   
   const disabledStyles = disabled ? 'opacity-50 cursor-not-allowed' : ''
@@ -65,7 +65,7 @@ export default function RippleButton({
     <motion.button
       onClick={handleClick}
       disabled={disabled}
-      whileHover={disabled ? {} : { scale: 1.02 }}
+      whileHover={disabled ? {} : { scale: 1.03 }}
       whileTap={disabled ? {} : { scale: 0.98 }}
       className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${disabledStyles} ${className}`}
     >
