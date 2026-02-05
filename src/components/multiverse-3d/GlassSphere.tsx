@@ -194,9 +194,16 @@ function TexturedMaterial({
   const texture = useTexture(texturePath)
   
   useEffect(() => {
-    // 设置纹理属性 - 优化球体映射
-    texture.wrapS = THREE.RepeatWrapping
-    texture.wrapT = THREE.ClampToEdgeWrapping
+    // 使用镜像重复包裹 - 消除接缝
+    // NASA 图片不是标准 2:1 equirectangular 格式
+    // 镜像重复可以让纹理在球体上无缝衔接
+    texture.wrapS = THREE.MirroredRepeatWrapping
+    texture.wrapT = THREE.MirroredRepeatWrapping
+    
+    // 设置纹理偏移，让图片中心对准球体正面
+    texture.center.set(0.5, 0.5)
+    texture.rotation = 0
+    
     texture.minFilter = THREE.LinearMipmapLinearFilter
     texture.magFilter = THREE.LinearFilter
     texture.anisotropy = 16 // 提高纹理清晰度
